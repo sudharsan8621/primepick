@@ -1,25 +1,34 @@
-import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
-import { fetchCart } from '../../redux/slices/cartSlice';
-import { createOrder, clearOrderSuccess } from '../../redux/slices/orderSlice';
-import Loader from '../../components/Loader/Loader';
-import './Checkout.css';
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchCart } from "../../redux/slices/cartSlice";
+import { createOrder, clearOrderSuccess } from "../../redux/slices/orderSlice";
+import Loader from "../../components/Loader/Loader";
+import "./Checkout.css";
+import { getProductImage } from "../../assets/images/products";
 
 const Checkout = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  
-  const { items, totalAmount, loading: cartLoading } = useSelector((state) => state.cart);
-  const { loading: orderLoading, success, error } = useSelector((state) => state.orders);
+
+  const {
+    items,
+    totalAmount,
+    loading: cartLoading,
+  } = useSelector((state) => state.cart);
+  const {
+    loading: orderLoading,
+    success,
+    error,
+  } = useSelector((state) => state.orders);
 
   const [formData, setFormData] = useState({
-    fullName: '',
-    address: '',
-    city: '',
-    state: '',
-    pincode: '',
-    phone: '',
+    fullName: "",
+    address: "",
+    city: "",
+    state: "",
+    pincode: "",
+    phone: "",
   });
 
   const [errors, setErrors] = useState({});
@@ -31,26 +40,26 @@ const Checkout = () => {
   useEffect(() => {
     if (success) {
       dispatch(clearOrderSuccess());
-      navigate('/profile', { state: { orderSuccess: true } });
+      navigate("/profile", { state: { orderSuccess: true } });
     }
   }, [success, navigate, dispatch]);
 
   const validateForm = () => {
     const newErrors = {};
-    
-    if (!formData.fullName.trim()) newErrors.fullName = 'Full name is required';
-    if (!formData.address.trim()) newErrors.address = 'Address is required';
-    if (!formData.city.trim()) newErrors.city = 'City is required';
-    if (!formData.state.trim()) newErrors.state = 'State is required';
+
+    if (!formData.fullName.trim()) newErrors.fullName = "Full name is required";
+    if (!formData.address.trim()) newErrors.address = "Address is required";
+    if (!formData.city.trim()) newErrors.city = "City is required";
+    if (!formData.state.trim()) newErrors.state = "State is required";
     if (!formData.pincode.trim()) {
-      newErrors.pincode = 'Pincode is required';
+      newErrors.pincode = "Pincode is required";
     } else if (!/^\d{6}$/.test(formData.pincode)) {
-      newErrors.pincode = 'Invalid pincode (6 digits required)';
+      newErrors.pincode = "Invalid pincode (6 digits required)";
     }
     if (!formData.phone.trim()) {
-      newErrors.phone = 'Phone number is required';
+      newErrors.phone = "Phone number is required";
     } else if (!/^\d{10}$/.test(formData.phone)) {
-      newErrors.phone = 'Invalid phone number (10 digits required)';
+      newErrors.phone = "Invalid phone number (10 digits required)";
     }
 
     setErrors(newErrors);
@@ -67,16 +76,16 @@ const Checkout = () => {
     if (errors[name]) {
       setErrors((prev) => ({
         ...prev,
-        [name]: '',
+        [name]: "",
       }));
     }
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    
+
     if (!validateForm()) return;
-    
+
     dispatch(createOrder({ shippingAddress: formData }));
   };
 
@@ -90,9 +99,9 @@ const Checkout = () => {
             <span className="empty-icon">🛒</span>
             <h2>Your cart is empty</h2>
             <p>Add items to your cart before checkout</p>
-            <button 
+            <button
               className="btn btn-primary btn-lg"
-              onClick={() => navigate('/products')}
+              onClick={() => navigate("/products")}
             >
               Browse Products
             </button>
@@ -113,7 +122,7 @@ const Checkout = () => {
         <div className="checkout-content">
           <div className="checkout-form-section">
             <h2>Shipping Address</h2>
-            
+
             <form onSubmit={handleSubmit} className="checkout-form">
               <div className="form-group">
                 <label className="form-label">Full Name *</label>
@@ -122,10 +131,12 @@ const Checkout = () => {
                   name="fullName"
                   value={formData.fullName}
                   onChange={handleChange}
-                  className={`form-input ${errors.fullName ? 'error' : ''}`}
+                  className={`form-input ${errors.fullName ? "error" : ""}`}
                   placeholder="Enter your full name"
                 />
-                {errors.fullName && <span className="form-error">{errors.fullName}</span>}
+                {errors.fullName && (
+                  <span className="form-error">{errors.fullName}</span>
+                )}
               </div>
 
               <div className="form-group">
@@ -134,11 +145,13 @@ const Checkout = () => {
                   name="address"
                   value={formData.address}
                   onChange={handleChange}
-                  className={`form-input ${errors.address ? 'error' : ''}`}
+                  className={`form-input ${errors.address ? "error" : ""}`}
                   placeholder="Enter your complete address"
                   rows="3"
                 />
-                {errors.address && <span className="form-error">{errors.address}</span>}
+                {errors.address && (
+                  <span className="form-error">{errors.address}</span>
+                )}
               </div>
 
               <div className="form-row">
@@ -149,10 +162,12 @@ const Checkout = () => {
                     name="city"
                     value={formData.city}
                     onChange={handleChange}
-                    className={`form-input ${errors.city ? 'error' : ''}`}
+                    className={`form-input ${errors.city ? "error" : ""}`}
                     placeholder="City"
                   />
-                  {errors.city && <span className="form-error">{errors.city}</span>}
+                  {errors.city && (
+                    <span className="form-error">{errors.city}</span>
+                  )}
                 </div>
 
                 <div className="form-group">
@@ -162,10 +177,12 @@ const Checkout = () => {
                     name="state"
                     value={formData.state}
                     onChange={handleChange}
-                    className={`form-input ${errors.state ? 'error' : ''}`}
+                    className={`form-input ${errors.state ? "error" : ""}`}
                     placeholder="State"
                   />
-                  {errors.state && <span className="form-error">{errors.state}</span>}
+                  {errors.state && (
+                    <span className="form-error">{errors.state}</span>
+                  )}
                 </div>
               </div>
 
@@ -177,11 +194,13 @@ const Checkout = () => {
                     name="pincode"
                     value={formData.pincode}
                     onChange={handleChange}
-                    className={`form-input ${errors.pincode ? 'error' : ''}`}
+                    className={`form-input ${errors.pincode ? "error" : ""}`}
                     placeholder="6-digit pincode"
                     maxLength="6"
                   />
-                  {errors.pincode && <span className="form-error">{errors.pincode}</span>}
+                  {errors.pincode && (
+                    <span className="form-error">{errors.pincode}</span>
+                  )}
                 </div>
 
                 <div className="form-group">
@@ -191,35 +210,50 @@ const Checkout = () => {
                     name="phone"
                     value={formData.phone}
                     onChange={handleChange}
-                    className={`form-input ${errors.phone ? 'error' : ''}`}
+                    className={`form-input ${errors.phone ? "error" : ""}`}
                     placeholder="10-digit phone number"
                     maxLength="10"
                   />
-                  {errors.phone && <span className="form-error">{errors.phone}</span>}
+                  {errors.phone && (
+                    <span className="form-error">{errors.phone}</span>
+                  )}
                 </div>
               </div>
 
-              {error && (
-                <div className="checkout-error">
-                  {error}
-                </div>
-              )}
+              {error && <div className="checkout-error">{error}</div>}
 
-              <button 
-                type="submit" 
+              <button
+                type="submit"
                 className="btn btn-primary btn-lg place-order-btn"
                 disabled={orderLoading}
               >
-                {orderLoading ? 'Processing...' : `Place Order - ₹${finalTotal.toLocaleString('en-IN')}`}
+                {orderLoading
+                  ? "Processing..."
+                  : `Place Order - ₹${finalTotal.toLocaleString("en-IN")}`}
               </button>
             </form>
           </div>
 
           <div className="order-summary-section">
             <h2>Order Summary</h2>
-            
+
             <div className="order-items">
               {items.map((item) => (
+                <div key={item.product._id} className="order-item">
+                  <img
+                    src={getProductImage(item.product.image)}
+                    alt={item.product.title}
+                  />
+                  <div className="order-item-details">
+                    <h4>{item.product.title}</h4>
+                    <p>Qty: {item.quantity}</p>
+                  </div>
+                  <span className="order-item-price">
+                    ₹{(item.price * item.quantity).toLocaleString("en-IN")}
+                  </span>
+                </div>
+              ))}
+              {/* {items.map((item) => (
                 <div key={item.product._id} className="order-item">
                   <img
                     src={`/src/assets/images/products/${item.product.image}`}
@@ -236,23 +270,23 @@ const Checkout = () => {
                     ₹{(item.price * item.quantity).toLocaleString('en-IN')}
                   </span>
                 </div>
-              ))}
+              ))} */}
             </div>
 
             <div className="order-totals">
               <div className="total-row">
                 <span>Subtotal</span>
-                <span>₹{totalAmount.toLocaleString('en-IN')}</span>
+                <span>₹{totalAmount.toLocaleString("en-IN")}</span>
               </div>
               <div className="total-row">
                 <span>Shipping</span>
-                <span className={shippingCost === 0 ? 'free' : ''}>
-                  {shippingCost === 0 ? 'FREE' : `₹${shippingCost}`}
+                <span className={shippingCost === 0 ? "free" : ""}>
+                  {shippingCost === 0 ? "FREE" : `₹${shippingCost}`}
                 </span>
               </div>
               <div className="total-row final">
                 <span>Total</span>
-                <span>₹{finalTotal.toLocaleString('en-IN')}</span>
+                <span>₹{finalTotal.toLocaleString("en-IN")}</span>
               </div>
             </div>
 

@@ -1,23 +1,31 @@
-import { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { useLocation, useNavigate } from 'react-router-dom';
-import { fetchOrders } from '../../redux/slices/orderSlice';
-import { fetchWishlist, removeFromWishlist } from '../../redux/slices/wishlistSlice';
-import { addToCart } from '../../redux/slices/cartSlice';
-import Loader from '../../components/Loader/Loader';
-import Rating from '../../components/Rating/Rating';
-import './Profile.css';
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useLocation, useNavigate } from "react-router-dom";
+import { fetchOrders } from "../../redux/slices/orderSlice";
+import {
+  fetchWishlist,
+  removeFromWishlist,
+} from "../../redux/slices/wishlistSlice";
+import { addToCart } from "../../redux/slices/cartSlice";
+import Loader from "../../components/Loader/Loader";
+import Rating from "../../components/Rating/Rating";
+import "./Profile.css";
+import { getProductImage } from "../../assets/images/products";
 
 const Profile = () => {
   const dispatch = useDispatch();
   const location = useLocation();
   const navigate = useNavigate();
-  
-  const { user } = useSelector((state) => state.auth);
-  const { orders, loading: ordersLoading } = useSelector((state) => state.orders);
-  const { products: wishlist, loading: wishlistLoading } = useSelector((state) => state.wishlist);
 
-  const [activeTab, setActiveTab] = useState('orders');
+  const { user } = useSelector((state) => state.auth);
+  const { orders, loading: ordersLoading } = useSelector(
+    (state) => state.orders
+  );
+  const { products: wishlist, loading: wishlistLoading } = useSelector(
+    (state) => state.wishlist
+  );
+
+  const [activeTab, setActiveTab] = useState("orders");
   const [expandedOrders, setExpandedOrders] = useState({});
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
 
@@ -51,25 +59,25 @@ const Profile = () => {
   };
 
   const formatDate = (dateString) => {
-    return new Date(dateString).toLocaleDateString('en-IN', {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric',
+    return new Date(dateString).toLocaleDateString("en-IN", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
     });
   };
 
   const getStatusColor = (status) => {
     switch (status) {
-      case 'Processing':
-        return 'status-processing';
-      case 'Shipped':
-        return 'status-shipped';
-      case 'Delivered':
-        return 'status-delivered';
-      case 'Cancelled':
-        return 'status-cancelled';
+      case "Processing":
+        return "status-processing";
+      case "Shipped":
+        return "status-shipped";
+      case "Delivered":
+        return "status-delivered";
+      case "Cancelled":
+        return "status-cancelled";
       default:
-        return '';
+        return "";
     }
   };
 
@@ -83,9 +91,7 @@ const Profile = () => {
         )}
 
         <div className="profile-header">
-          <div className="profile-avatar">
-            👤
-          </div>
+          <div className="profile-avatar">👤</div>
           <div className="profile-info">
             <h1>{user?.username}</h1>
             <p>{user?.email}</p>
@@ -94,21 +100,21 @@ const Profile = () => {
 
         <div className="profile-tabs">
           <button
-            className={`tab-btn ${activeTab === 'orders' ? 'active' : ''}`}
-            onClick={() => setActiveTab('orders')}
+            className={`tab-btn ${activeTab === "orders" ? "active" : ""}`}
+            onClick={() => setActiveTab("orders")}
           >
             🧾 My Orders ({orders.length})
           </button>
           <button
-            className={`tab-btn ${activeTab === 'wishlist' ? 'active' : ''}`}
-            onClick={() => setActiveTab('wishlist')}
+            className={`tab-btn ${activeTab === "wishlist" ? "active" : ""}`}
+            onClick={() => setActiveTab("wishlist")}
           >
             ❤️ Wishlist ({wishlist.length})
           </button>
         </div>
 
         <div className="profile-content">
-          {activeTab === 'orders' && (
+          {activeTab === "orders" && (
             <div className="orders-section">
               {ordersLoading ? (
                 <Loader />
@@ -117,9 +123,9 @@ const Profile = () => {
                   <span className="empty-icon">🧾</span>
                   <h3>No orders yet</h3>
                   <p>When you place orders, they will appear here.</p>
-                  <button 
+                  <button
                     className="btn btn-primary"
-                    onClick={() => navigate('/products')}
+                    onClick={() => navigate("/products")}
                   >
                     Start Shopping
                   </button>
@@ -128,23 +134,31 @@ const Profile = () => {
                 <div className="orders-list">
                   {orders.map((order) => (
                     <div key={order._id} className="order-card">
-                      <div 
+                      <div
                         className="order-header"
                         onClick={() => toggleOrderExpand(order._id)}
                       >
                         <div className="order-info">
-                          <span className="order-id">Order #{order._id.slice(-8).toUpperCase()}</span>
-                          <span className="order-date">{formatDate(order.orderedAt)}</span>
+                          <span className="order-id">
+                            Order #{order._id.slice(-8).toUpperCase()}
+                          </span>
+                          <span className="order-date">
+                            {formatDate(order.orderedAt)}
+                          </span>
                         </div>
                         <div className="order-meta">
-                          <span className={`order-status ${getStatusColor(order.orderStatus)}`}>
+                          <span
+                            className={`order-status ${getStatusColor(
+                              order.orderStatus
+                            )}`}
+                          >
                             {order.orderStatus}
                           </span>
                           <span className="order-total">
-                            ₹{order.totalAmount.toLocaleString('en-IN')}
+                            ₹{order.totalAmount.toLocaleString("en-IN")}
                           </span>
                           <span className="expand-icon">
-                            {expandedOrders[order._id] ? '▲' : '▼'}
+                            {expandedOrders[order._id] ? "▲" : "▼"}
                           </span>
                         </div>
                       </div>
@@ -154,19 +168,30 @@ const Profile = () => {
                           <div className="order-items">
                             {order.items.map((item, index) => (
                               <div key={index} className="order-detail-item">
-                                <img
+                                {/* <img
                                   src={`/src/assets/images/products/${item.image}`}
                                   alt={item.title}
                                   onError={(e) => {
-                                    e.target.src = 'https://via.placeholder.com/50x50?text=Product';
+                                    e.target.src =
+                                      "https://via.placeholder.com/50x50?text=Product";
                                   }}
+                                /> */}
+                                <img
+                                  src={getProductImage(item.image)}
+                                  alt={item.title}
                                 />
                                 <div className="item-info">
                                   <h4>{item.title}</h4>
-                                  <p>Qty: {item.quantity} × ₹{item.price.toLocaleString('en-IN')}</p>
+                                  <p>
+                                    Qty: {item.quantity} × ₹
+                                    {item.price.toLocaleString("en-IN")}
+                                  </p>
                                 </div>
                                 <span className="item-total">
-                                  ₹{(item.price * item.quantity).toLocaleString('en-IN')}
+                                  ₹
+                                  {(item.price * item.quantity).toLocaleString(
+                                    "en-IN"
+                                  )}
                                 </span>
                               </div>
                             ))}
@@ -175,9 +200,14 @@ const Profile = () => {
                           <div className="shipping-details">
                             <h4>📍 Shipping Address</h4>
                             <p>
-                              {order.shippingAddress.fullName}<br />
-                              {order.shippingAddress.address}<br />
-                              {order.shippingAddress.city}, {order.shippingAddress.state} - {order.shippingAddress.pincode}<br />
+                              {order.shippingAddress.fullName}
+                              <br />
+                              {order.shippingAddress.address}
+                              <br />
+                              {order.shippingAddress.city},{" "}
+                              {order.shippingAddress.state} -{" "}
+                              {order.shippingAddress.pincode}
+                              <br />
                               Phone: {order.shippingAddress.phone}
                             </p>
                           </div>
@@ -190,7 +220,7 @@ const Profile = () => {
             </div>
           )}
 
-          {activeTab === 'wishlist' && (
+          {activeTab === "wishlist" && (
             <div className="wishlist-section">
               {wishlistLoading ? (
                 <Loader />
@@ -199,9 +229,9 @@ const Profile = () => {
                   <span className="empty-icon">❤️</span>
                   <h3>Your wishlist is empty</h3>
                   <p>Save items you love by clicking the heart icon.</p>
-                  <button 
+                  <button
                     className="btn btn-primary"
-                    onClick={() => navigate('/products')}
+                    onClick={() => navigate("/products")}
                   >
                     Explore Products
                   </button>
@@ -211,32 +241,46 @@ const Profile = () => {
                   {wishlist.map((product) => (
                     <div key={product._id} className="wishlist-card">
                       <img
+                        src={getProductImage(product.image)}
+                        alt={product.title}
+                        onClick={() => navigate(`/products/${product._id}`)}
+                      />
+
+                      {/* <img
                         src={`/src/assets/images/products/${product.image}`}
                         alt={product.title}
                         onClick={() => navigate(`/products/${product._id}`)}
                         onError={(e) => {
                           e.target.src = 'https://via.placeholder.com/200x200?text=Product';
                         }}
-                      />
+                      /> */}
                       <div className="wishlist-card-info">
-                        <span className="wishlist-category">{product.category}</span>
-                        <h4 onClick={() => navigate(`/products/${product._id}`)}>
+                        <span className="wishlist-category">
+                          {product.category}
+                        </span>
+                        <h4
+                          onClick={() => navigate(`/products/${product._id}`)}
+                        >
                           {product.title}
                         </h4>
                         <Rating value={product.rating} />
                         <p className="wishlist-price">
-                          ₹{product.price.toLocaleString('en-IN')}
+                          ₹{product.price.toLocaleString("en-IN")}
                         </p>
                         <div className="wishlist-actions">
                           <button
                             className="btn btn-primary btn-sm"
-                            onClick={() => handleAddToCartFromWishlist(product._id)}
+                            onClick={() =>
+                              handleAddToCartFromWishlist(product._id)
+                            }
                           >
                             Add to Cart
                           </button>
                           <button
                             className="btn btn-outline btn-sm"
-                            onClick={() => handleRemoveFromWishlist(product._id)}
+                            onClick={() =>
+                              handleRemoveFromWishlist(product._id)
+                            }
                           >
                             Remove
                           </button>
