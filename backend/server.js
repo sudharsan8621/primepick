@@ -3,21 +3,20 @@ const cors = require('cors');
 const dotenv = require('dotenv');
 const connectDB = require('./config/db');
 
-// Load env variables
 dotenv.config();
-
-// Connect to database
 connectDB();
 
 const app = express();
 
-// Middleware
+// CORS Configuration
 app.use(cors({
-  origin: process.env.NODE_ENV === 'production' 
-    ? process.env.FRONTEND_URL 
-    : 'http://localhost:5173',
+  origin: [
+    'http://localhost:5173',
+    'https://your-frontend-url.vercel.app'  // Add your Vercel URL later
+  ],
   credentials: true
 }));
+
 app.use(express.json());
 
 // Routes
@@ -27,18 +26,19 @@ app.use('/api/cart', require('./routes/cartRoutes'));
 app.use('/api/orders', require('./routes/orderRoutes'));
 app.use('/api/wishlist', require('./routes/wishlistRoutes'));
 
-// Health check
-app.get('/api/health', (req, res) => {
-  res.json({ status: 'ok', message: 'PrimePick API is running' });
+// Health check route
+app.get('/', (req, res) => {
+  res.json({ message: 'PrimePick API is running!' });
 });
 
-// Error handling middleware
+app.get('/api/health', (req, res) => {
+  res.json({ status: 'ok', message: 'Server is healthy' });
+});
+
+// Error handling
 app.use((err, req, res, next) => {
   console.error(err.stack);
-  res.status(500).json({ 
-    message: 'Something went wrong!', 
-    error: process.env.NODE_ENV === 'development' ? err.message : undefined 
-  });
+  res.status(500).json({ message: 'Something went wrong!' });
 });
 
 const PORT = process.env.PORT || 5000;
