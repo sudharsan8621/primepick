@@ -61,7 +61,6 @@
 
 
 
-
 const express = require('express');
 const cors = require('cors');
 const dotenv = require('dotenv');
@@ -75,26 +74,17 @@ connectDB();
 
 const app = express();
 
-// CORS Configuration - IMPORTANT!
-const corsOptions = {
+// CORS Configuration
+app.use(cors({
   origin: [
     'http://localhost:5173',
     'http://localhost:3000',
-    'https://primepick-six.vercel.app',
-    'https://primepick-six-git-main.vercel.app',
-    'https://primepick-six-sudharsan.vercel.app'
+    'https://primepick-six.vercel.app'
   ],
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization'],
-  credentials: true,
-  optionsSuccessStatus: 200
-};
-
-// Apply CORS middleware
-app.use(cors(corsOptions));
-
-// Handle preflight requests
-app.options('*', cors(corsOptions));
+  credentials: true
+}));
 
 // Parse JSON
 app.use(express.json());
