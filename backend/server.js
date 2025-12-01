@@ -12,7 +12,8 @@ const app = express();
 app.use(cors({
   origin: [
     'http://localhost:5173',
-    'https://your-frontend-url.vercel.app'  // Add your Vercel URL later
+    'https://primepick.vercel.app',
+    'https://primepick-yjio.onrender.com/api/products/categories'  // Add your Vercel URL later
   ],
   credentials: true
 }));
