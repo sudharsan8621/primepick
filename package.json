@@ -1,0 +1,30 @@
+{
+  "name": "primepick-ecommerce",
+  "version": "1.0.0",
+  "description": "node_modules/\r dist/\r .env\r *.log",
+  "main": "index.js",
+  "scripts": {
+    "install:all": "npm install && cd backend && npm install && cd ../frontend && npm install",
+    "dev": "concurrently \"npm run server\" \"npm run client\"",
+    "server": "cd backend && npm run dev",
+    "client": "cd frontend && npm run dev",
+    "start": "npm run dev",
+    "build": "cd frontend && npm run build",
+    "seed": "cd backend && npm run seed"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sudharsan8621/primepick.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/sudharsan8621/primepick/issues"
+  },
+  "homepage": "https://github.com/sudharsan8621/primepick#readme",
+  "devDependencies": {
+    "concurrently": "^9.2.1"
+  }
+}
