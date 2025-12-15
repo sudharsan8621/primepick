@@ -826,6 +826,38 @@ app.get('/api/seed', async (req, res) => {
 });
 // ===== END SEED ROUTE =====
 
+app.use('/api/admin', require('./routes/adminRoutes'));
+
+// Create Admin User Route (use once, then remove)
+app.get('/api/create-admin', async (req, res) => {
+  try {
+    const User = require('./models/User');
+    
+    // Check if admin exists
+    const existingAdmin = await User.findOne({ email: 'admin@primepick.com' });
+    if (existingAdmin) {
+      return res.json({ message: 'Admin already exists', email: 'admin@primepick.com' });
+    }
+
+    // Create admin
+    const admin = new User({
+      username: 'admin',
+      email: 'admin@primepick.com',
+      password: 'admin123',
+      isAdmin: true
+    });
+
+    await admin.save();
+    res.json({ 
+      message: 'Admin created successfully!',
+      email: 'admin@primepick.com',
+      password: 'admin123'
+    });
+  } catch (error) {
+    res.status(500).json({ message: 'Failed to create admin', error: error.message });
+  }
+});
+
 // Error handling
 app.use((err, req, res, next) => {
   console.error(err.stack);

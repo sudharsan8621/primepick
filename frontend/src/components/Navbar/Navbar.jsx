@@ -79,6 +79,13 @@ const Navbar = () => {
                     👤 {user?.username || 'Profile'}
                   </Link>
                 </li>
+                {user?.isAdmin && (
+                  <li>
+                    <Link to="/admin" className={location.pathname === '/admin' ? 'active' : ''}>
+                    🛠️ Admin
+                    </Link>
+                    </li>
+                  )}
                 <li>
                   <button onClick={handleLogout} className="logout-btn">
                     Logout
