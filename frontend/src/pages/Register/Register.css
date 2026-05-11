@@ -361,6 +361,18 @@
   animation: spin 0.7s linear infinite;
 }
 
+/* Login.css and Register.css la add pannu */
+.eye-icon {
+  width: 20px;
+  height: 20px;
+  color: var(--text-muted);
+  transition: color 0.2s ease;
+}
+
+.password-toggle:hover .eye-icon {
+  color: var(--text-primary);
+}
+
 @keyframes spin {
   to { transform: rotate(360deg); }
 }

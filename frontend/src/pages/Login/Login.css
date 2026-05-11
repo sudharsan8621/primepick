@@ -444,6 +444,18 @@
   color: #e55a2b;
 }
 
+/* Login.css and Register.css la add pannu */
+.eye-icon {
+  width: 20px;
+  height: 20px;
+  color: var(--text-muted);
+  transition: color 0.2s ease;
+}
+
+.password-toggle:hover .eye-icon {
+  color: var(--text-primary);
+}
+
 /* Tablet */
 @media (max-width: 1024px) {
   .auth-left {
