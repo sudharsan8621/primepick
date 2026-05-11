@@ -33,11 +33,6 @@ const Login = () => {
     dispatch(login({ email, password }));
   };
 
-  const fillAdmin = () => {
-    setEmail('admin@primepick.com');
-    setPassword('admin123');
-  };
-
   return (
     <div className="auth-page">
 
@@ -181,27 +176,6 @@ const Login = () => {
                 'Sign In'
               )}
             </button>
-
-            {/* Divider */}
-            <div className="auth-divider">
-              <span>Demo Account</span>
-            </div>
-
-            {/* Demo Box */}
-            <div className="demo-box">
-              <p className="demo-box-title">Admin Credentials</p>
-              <div className="demo-info">
-                <span>admin@primepick.com</span>
-                <span>admin123</span>
-              </div>
-              <button
-                type="button"
-                className="demo-fill-btn"
-                onClick={fillAdmin}
-              >
-                Auto Fill Credentials
-              </button>
-            </div>
 
           </form>
 
