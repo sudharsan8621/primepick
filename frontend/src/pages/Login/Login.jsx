@@ -36,7 +36,6 @@ const Login = () => {
     dispatch(login({ email, password }));
   };
 
-  // Demo admin fill
   const fillAdminCredentials = () => {
     setEmail('admin@primepick.com');
     setPassword('admin123');
@@ -44,22 +43,60 @@ const Login = () => {
 
   return (
     <div className="auth-page">
-      <div className="auth-container">
-        <div className="auth-card">
 
-          {/* Logo */}
-          <div className="auth-logo">
-            <span className="auth-logo-icon">🛍️</span>
-            <span className="auth-logo-text">PrimePick</span>
+      {/* Left Side */}
+      <div className="auth-left">
+        <div className="auth-left-content">
+          <div className="auth-brand">
+            <span className="auth-brand-icon">🛍️</span>
+            <span className="auth-brand-name">PrimePick</span>
           </div>
 
-          {/* Header */}
+          <div className="auth-left-image">🛒</div>
+
+          <h2 className="auth-left-title">
+            Shop Smarter,<br />Live Better!
+          </h2>
+          <p className="auth-left-subtitle">
+            Discover amazing products at unbeatable prices.
+            Your perfect shopping experience awaits!
+          </p>
+
+          <div className="auth-left-features">
+            <div className="auth-feature-item">
+              <span className="auth-feature-icon">🚚</span>
+              <div className="auth-feature-text">
+                <h4>Free Delivery</h4>
+                <p>On orders above ₹999</p>
+              </div>
+            </div>
+            <div className="auth-feature-item">
+              <span className="auth-feature-icon">🔒</span>
+              <div className="auth-feature-text">
+                <h4>Secure Payment</h4>
+                <p>100% safe transactions</p>
+              </div>
+            </div>
+            <div className="auth-feature-item">
+              <span className="auth-feature-icon">↩️</span>
+              <div className="auth-feature-text">
+                <h4>Easy Returns</h4>
+                <p>7 day return policy</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Right Side */}
+      <div className="auth-right">
+        <div className="auth-form-container">
+
           <div className="auth-header">
             <h1>Welcome Back! 👋</h1>
             <p>Sign in to continue your shopping journey</p>
           </div>
 
-          {/* Form */}
           <form onSubmit={handleSubmit} className="auth-form">
 
             {error && (
@@ -103,7 +140,6 @@ const Login = () => {
                   type="button"
                   className="password-toggle"
                   onClick={() => setShowPassword(!showPassword)}
-                  aria-label="Toggle password"
                 >
                   {showPassword ? '🙈' : '👁️'}
                 </button>
@@ -128,18 +164,22 @@ const Login = () => {
 
             {/* Divider */}
             <div className="auth-divider">
-              <span>or try demo</span>
+              <span>or try demo account</span>
             </div>
 
-            {/* Demo Credentials */}
-            <div className="demo-credentials">
-              <p>🛠️ Admin Demo</p>
+            {/* Demo Box */}
+            <div className="demo-box">
+              <p>🛠️ Admin Demo Credentials</p>
+              <div className="demo-credentials-list">
+                <span>📧 admin@primepick.com</span>
+                <span>🔑 admin123</span>
+              </div>
               <button
                 type="button"
-                className="demo-btn"
+                className="demo-fill-btn"
                 onClick={fillAdminCredentials}
               >
-                Fill Admin Credentials
+                ⚡ Auto Fill
               </button>
             </div>
 
@@ -152,24 +192,10 @@ const Login = () => {
               <Link to="/register">Create one free →</Link>
             </p>
           </div>
-        </div>
 
-        {/* Features */}
-        <div className="auth-features">
-          <div className="auth-feature">
-            <span>🔒</span>
-            <span>Secure Login</span>
-          </div>
-          <div className="auth-feature">
-            <span>🚚</span>
-            <span>Free Shipping</span>
-          </div>
-          <div className="auth-feature">
-            <span>↩️</span>
-            <span>Easy Returns</span>
-          </div>
         </div>
       </div>
+
     </div>
   );
 };

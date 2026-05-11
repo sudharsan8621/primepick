@@ -24,18 +24,13 @@ const Register = () => {
   );
 
   useEffect(() => {
-    if (isAuthenticated) {
-      navigate('/');
-    }
+    if (isAuthenticated) navigate('/');
   }, [isAuthenticated, navigate]);
 
   useEffect(() => {
-    return () => {
-      dispatch(clearError());
-    };
+    return () => { dispatch(clearError()); };
   }, [dispatch]);
 
-  // Password Strength Check
   const checkPasswordStrength = (password) => {
     if (password.length === 0) return '';
     if (password.length < 6) return 'weak';
@@ -43,22 +38,16 @@ const Register = () => {
       password.length >= 8 &&
       /[A-Z]/.test(password) &&
       /[0-9]/.test(password)
-    ) {
-      return 'strong';
-    }
+    ) return 'strong';
     return 'medium';
   };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
-
-    // Clear field error
     if (validationErrors[name]) {
       setValidationErrors((prev) => ({ ...prev, [name]: '' }));
     }
-
-    // Password strength
     if (name === 'password') {
       setPasswordStrength(checkPasswordStrength(value));
     }
@@ -66,33 +55,28 @@ const Register = () => {
 
   const validate = () => {
     const errors = {};
-
     if (!formData.username.trim()) {
       errors.username = 'Username is required';
     } else if (formData.username.length < 3) {
       errors.username = 'Minimum 3 characters';
     } else if (!/^[a-zA-Z0-9_]+$/.test(formData.username)) {
-      errors.username = 'Only letters, numbers, underscore allowed';
+      errors.username = 'Only letters, numbers, underscore';
     }
-
     if (!formData.email.trim()) {
       errors.email = 'Email is required';
     } else if (!/^\S+@\S+\.\S+$/.test(formData.email)) {
       errors.email = 'Enter a valid email';
     }
-
     if (!formData.password) {
       errors.password = 'Password is required';
     } else if (formData.password.length < 6) {
       errors.password = 'Minimum 6 characters';
     }
-
     if (!formData.confirmPassword) {
       errors.confirmPassword = 'Please confirm password';
     } else if (formData.password !== formData.confirmPassword) {
       errors.confirmPassword = 'Passwords do not match';
     }
-
     setValidationErrors(errors);
     return Object.keys(errors).length === 0;
   };
@@ -100,14 +84,11 @@ const Register = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!validate()) return;
-
-    dispatch(
-      register({
-        username: formData.username,
-        email: formData.email,
-        password: formData.password,
-      })
-    );
+    dispatch(register({
+      username: formData.username,
+      email: formData.email,
+      password: formData.password,
+    }));
   };
 
   const getStrengthLabel = () => {
@@ -121,28 +102,64 @@ const Register = () => {
 
   return (
     <div className="auth-page">
-      <div className="auth-container">
-        <div className="auth-card">
 
-          {/* Logo */}
-          <div className="auth-logo">
-            <span className="auth-logo-icon">🛍️</span>
-            <span className="auth-logo-text">PrimePick</span>
+      {/* Left Side */}
+      <div className="auth-left">
+        <div className="auth-left-content">
+          <div className="auth-brand">
+            <span className="auth-brand-icon">🛍️</span>
+            <span className="auth-brand-name">PrimePick</span>
           </div>
 
-          {/* Header */}
+          <div className="auth-left-image">🎁</div>
+
+          <h2 className="auth-left-title">
+            Join Our<br />Community!
+          </h2>
+          <p className="auth-left-subtitle">
+            Create your free account and start enjoying
+            exclusive deals and offers today!
+          </p>
+
+          <div className="auth-left-features">
+            <div className="auth-feature-item">
+              <span className="auth-feature-icon">🎁</span>
+              <div className="auth-feature-text">
+                <h4>Exclusive Deals</h4>
+                <p>Members only offers</p>
+              </div>
+            </div>
+            <div className="auth-feature-item">
+              <span className="auth-feature-icon">❤️</span>
+              <div className="auth-feature-text">
+                <h4>Wishlist</h4>
+                <p>Save your favorites</p>
+              </div>
+            </div>
+            <div className="auth-feature-item">
+              <span className="auth-feature-icon">📦</span>
+              <div className="auth-feature-text">
+                <h4>Track Orders</h4>
+                <p>Real time updates</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Right Side */}
+      <div className="auth-right">
+        <div className="auth-form-container">
+
           <div className="auth-header">
             <h1>Create Account 🚀</h1>
-            <p>Join thousands of happy shoppers!</p>
+            <p>Join thousands of happy shoppers today!</p>
           </div>
 
-          {/* Form */}
           <form onSubmit={handleSubmit} className="auth-form">
 
             {error && (
-              <div className="auth-error">
-                ⚠️ {error}
-              </div>
+              <div className="auth-error">⚠️ {error}</div>
             )}
 
             {/* Username */}
@@ -218,13 +235,10 @@ const Register = () => {
                 </button>
               </div>
 
-              {/* Password Strength */}
               {formData.password && (
                 <div className="password-strength">
                   <div className="strength-bar">
-                    <div
-                      className={`strength-fill ${passwordStrength}`}
-                    />
+                    <div className={`strength-fill ${passwordStrength}`} />
                   </div>
                   <span className={`strength-text ${passwordStrength}`}>
                     {getStrengthLabel()}
@@ -304,24 +318,10 @@ const Register = () => {
               <Link to="/login">Sign in →</Link>
             </p>
           </div>
-        </div>
 
-        {/* Features */}
-        <div className="auth-features">
-          <div className="auth-feature">
-            <span>✅</span>
-            <span>Free to Join</span>
-          </div>
-          <div className="auth-feature">
-            <span>🎁</span>
-            <span>Exclusive Deals</span>
-          </div>
-          <div className="auth-feature">
-            <span>🔒</span>
-            <span>100% Secure</span>
-          </div>
         </div>
       </div>
+
     </div>
   );
 };
