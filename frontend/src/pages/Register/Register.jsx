@@ -4,6 +4,21 @@ import { useDispatch, useSelector } from 'react-redux';
 import { register, clearError } from '../../redux/slices/authSlice';
 import './Register.css';
 
+const EyeIcon = () => (
+  <svg className="eye-icon" viewBox="0 0 24 24">
+    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+    <circle cx="12" cy="12" r="3"/>
+  </svg>
+);
+
+const EyeOffIcon = () => (
+  <svg className="eye-icon" viewBox="0 0 24 24">
+    <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94"/>
+    <path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19"/>
+    <line x1="1" y1="1" x2="23" y2="23"/>
+  </svg>
+);
+
 const Register = () => {
   const [formData, setFormData] = useState({
     username: '',
@@ -31,8 +46,8 @@ const Register = () => {
     return () => { dispatch(clearError()); };
   }, [dispatch]);
 
-  const checkPasswordStrength = (password) => {
-    if (password.length === 0) return '';
+  const checkStrength = (password) => {
+    if (!password) return '';
     if (password.length < 6) return 'weak';
     if (
       password.length >= 8 &&
@@ -48,9 +63,7 @@ const Register = () => {
     if (validationErrors[name]) {
       setValidationErrors((prev) => ({ ...prev, [name]: '' }));
     }
-    if (name === 'password') {
-      setPasswordStrength(checkPasswordStrength(value));
-    }
+    if (name === 'password') setPasswordStrength(checkStrength(value));
   };
 
   const validate = () => {
@@ -58,22 +71,22 @@ const Register = () => {
     if (!formData.username.trim()) {
       errors.username = 'Username is required';
     } else if (formData.username.length < 3) {
-      errors.username = 'Minimum 3 characters';
+      errors.username = 'Minimum 3 characters required';
     } else if (!/^[a-zA-Z0-9_]+$/.test(formData.username)) {
-      errors.username = 'Only letters, numbers, underscore';
+      errors.username = 'Only letters, numbers and underscore allowed';
     }
     if (!formData.email.trim()) {
       errors.email = 'Email is required';
     } else if (!/^\S+@\S+\.\S+$/.test(formData.email)) {
-      errors.email = 'Enter a valid email';
+      errors.email = 'Please enter a valid email';
     }
     if (!formData.password) {
       errors.password = 'Password is required';
     } else if (formData.password.length < 6) {
-      errors.password = 'Minimum 6 characters';
+      errors.password = 'Minimum 6 characters required';
     }
     if (!formData.confirmPassword) {
-      errors.confirmPassword = 'Please confirm password';
+      errors.confirmPassword = 'Please confirm your password';
     } else if (formData.password !== formData.confirmPassword) {
       errors.confirmPassword = 'Passwords do not match';
     }
@@ -91,82 +104,101 @@ const Register = () => {
     }));
   };
 
-  const getStrengthLabel = () => {
-    switch (passwordStrength) {
-      case 'weak': return '🔴 Weak';
-      case 'medium': return '🟡 Medium';
-      case 'strong': return '🟢 Strong';
-      default: return '';
-    }
+  const strengthLabel = {
+    weak: 'Weak password',
+    medium: 'Medium strength',
+    strong: 'Strong password',
   };
 
   return (
     <div className="auth-page">
 
-      {/* Left Side */}
+      {/* Left Panel */}
       <div className="auth-left">
         <div className="auth-left-content">
+
           <div className="auth-brand">
             <span className="auth-brand-icon">🛍️</span>
             <span className="auth-brand-name">PrimePick</span>
           </div>
 
-          <div className="auth-left-image">🎁</div>
-
           <h2 className="auth-left-title">
-            Join Our<br />Community!
+            Join<br />
+            <span>Millions</span> of<br />
+            Shoppers.
           </h2>
+
           <p className="auth-left-subtitle">
-            Create your free account and start enjoying
-            exclusive deals and offers today!
+            Create your free account today and unlock
+            exclusive deals, fast delivery, and more.
           </p>
 
           <div className="auth-left-features">
             <div className="auth-feature-item">
-              <span className="auth-feature-icon">🎁</span>
-              <div className="auth-feature-text">
-                <h4>Exclusive Deals</h4>
-                <p>Members only offers</p>
-              </div>
+              <div className="auth-feature-dot"></div>
+              <span className="auth-feature-text">
+                Access to exclusive member deals
+              </span>
             </div>
             <div className="auth-feature-item">
-              <span className="auth-feature-icon">❤️</span>
-              <div className="auth-feature-text">
-                <h4>Wishlist</h4>
-                <p>Save your favorites</p>
-              </div>
+              <div className="auth-feature-dot"></div>
+              <span className="auth-feature-text">
+                Save items to your wishlist
+              </span>
             </div>
             <div className="auth-feature-item">
-              <span className="auth-feature-icon">📦</span>
-              <div className="auth-feature-text">
-                <h4>Track Orders</h4>
-                <p>Real time updates</p>
+              <div className="auth-feature-dot"></div>
+              <span className="auth-feature-text">
+                Track your orders in real time
+              </span>
+            </div>
+            <div className="auth-feature-item">
+              <div className="auth-feature-dot"></div>
+              <span className="auth-feature-text">
+                Fast & secure checkout
+              </span>
+            </div>
+          </div>
+
+          <div className="auth-left-bottom">
+            <div className="auth-stats">
+              <div className="auth-stat">
+                <h4>50K+</h4>
+                <p>Products</p>
+              </div>
+              <div className="auth-stat">
+                <h4>2M+</h4>
+                <p>Customers</p>
+              </div>
+              <div className="auth-stat">
+                <h4>Free</h4>
+                <p>To Join</p>
               </div>
             </div>
           </div>
+
         </div>
       </div>
 
-      {/* Right Side */}
+      {/* Right Panel */}
       <div className="auth-right">
         <div className="auth-form-container">
 
           <div className="auth-header">
-            <h1>Create Account 🚀</h1>
-            <p>Join thousands of happy shoppers today!</p>
+            <h1>Create Account</h1>
+            <p>Fill in your details to get started.</p>
           </div>
 
           <form onSubmit={handleSubmit} className="auth-form">
 
             {error && (
-              <div className="auth-error">⚠️ {error}</div>
+              <div className="auth-error">{error}</div>
             )}
 
             {/* Username */}
             <div className="form-group">
               <label className="form-label">Username</label>
-              <div className="input-group">
-                <span className="input-icon">👤</span>
+              <div className="input-wrapper">
                 <input
                   type="text"
                   name="username"
@@ -175,22 +207,21 @@ const Register = () => {
                   className={`form-input ${
                     validationErrors.username ? 'input-error' : ''
                   }`}
-                  placeholder="Choose a username"
+                  placeholder="johndoe"
                   autoComplete="username"
                 />
               </div>
               {validationErrors.username && (
-                <p className="field-error">
-                  ⚠️ {validationErrors.username}
-                </p>
+                <span className="field-error">
+                  {validationErrors.username}
+                </span>
               )}
             </div>
 
             {/* Email */}
             <div className="form-group">
               <label className="form-label">Email Address</label>
-              <div className="input-group">
-                <span className="input-icon">📧</span>
+              <div className="input-wrapper">
                 <input
                   type="email"
                   name="email"
@@ -199,31 +230,30 @@ const Register = () => {
                   className={`form-input ${
                     validationErrors.email ? 'input-error' : ''
                   }`}
-                  placeholder="Enter your email"
+                  placeholder="you@example.com"
                   autoComplete="email"
                 />
               </div>
               {validationErrors.email && (
-                <p className="field-error">
-                  ⚠️ {validationErrors.email}
-                </p>
+                <span className="field-error">
+                  {validationErrors.email}
+                </span>
               )}
             </div>
 
             {/* Password */}
             <div className="form-group">
               <label className="form-label">Password</label>
-              <div className="input-group">
-                <span className="input-icon">🔒</span>
+              <div className="input-wrapper password-wrapper">
                 <input
                   type={showPassword ? 'text' : 'password'}
                   name="password"
                   value={formData.password}
                   onChange={handleChange}
-                  className={`form-input has-toggle ${
+                  className={`form-input ${
                     validationErrors.password ? 'input-error' : ''
                   }`}
-                  placeholder="Create a strong password"
+                  placeholder="Min. 6 characters"
                   autoComplete="new-password"
                 />
                 <button
@@ -231,7 +261,7 @@ const Register = () => {
                   className="password-toggle"
                   onClick={() => setShowPassword(!showPassword)}
                 >
-                  {showPassword ? '🙈' : '👁️'}
+                  {showPassword ? <EyeOffIcon /> : <EyeIcon />}
                 </button>
               </div>
 
@@ -241,32 +271,31 @@ const Register = () => {
                     <div className={`strength-fill ${passwordStrength}`} />
                   </div>
                   <span className={`strength-text ${passwordStrength}`}>
-                    {getStrengthLabel()}
+                    {strengthLabel[passwordStrength]}
                   </span>
                 </div>
               )}
 
               {validationErrors.password && (
-                <p className="field-error">
-                  ⚠️ {validationErrors.password}
-                </p>
+                <span className="field-error">
+                  {validationErrors.password}
+                </span>
               )}
             </div>
 
             {/* Confirm Password */}
             <div className="form-group">
               <label className="form-label">Confirm Password</label>
-              <div className="input-group">
-                <span className="input-icon">🔐</span>
+              <div className="input-wrapper password-wrapper">
                 <input
                   type={showConfirmPassword ? 'text' : 'password'}
                   name="confirmPassword"
                   value={formData.confirmPassword}
                   onChange={handleChange}
-                  className={`form-input has-toggle ${
+                  className={`form-input ${
                     validationErrors.confirmPassword ? 'input-error' : ''
                   }`}
-                  placeholder="Confirm your password"
+                  placeholder="Re-enter your password"
                   autoComplete="new-password"
                 />
                 <button
@@ -276,13 +305,13 @@ const Register = () => {
                     setShowConfirmPassword(!showConfirmPassword)
                   }
                 >
-                  {showConfirmPassword ? '🙈' : '👁️'}
+                  {showConfirmPassword ? <EyeOffIcon /> : <EyeIcon />}
                 </button>
               </div>
               {validationErrors.confirmPassword && (
-                <p className="field-error">
-                  ⚠️ {validationErrors.confirmPassword}
-                </p>
+                <span className="field-error">
+                  {validationErrors.confirmPassword}
+                </span>
               )}
             </div>
 
@@ -298,24 +327,22 @@ const Register = () => {
                   Creating Account...
                 </span>
               ) : (
-                '✨ Create Account'
+                'Create Account'
               )}
             </button>
 
-            {/* Terms */}
             <p className="terms-text">
-              By creating an account, you agree to our{' '}
+              By signing up, you agree to our{' '}
               <a href="#">Terms of Service</a> and{' '}
               <a href="#">Privacy Policy</a>
             </p>
 
           </form>
 
-          {/* Footer */}
           <div className="auth-footer">
             <p>
               Already have an account?{' '}
-              <Link to="/login">Sign in →</Link>
+              <Link to="/login">Sign In</Link>
             </p>
           </div>
 
